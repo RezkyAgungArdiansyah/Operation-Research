@@ -1,0 +1,116 @@
+clc;clear;close all;format rat;
+nKendala = input("Masukkan banyak persamaan kendala : ");
+Z = input("Masukkan persamaan yang mau dioptimalkan \n");nVariabel = length(Z);  % Masukkan dalam bentuk matriks
+Choose = input(" ''max'' / ''min'' = ");
+panjang = 0;
+%Input Fungsi Kendala
+for i = 1 : nKendala
+    Kendala (i,:) = input("Masukkan fungsi kendala ke - " + i + " : ");
+    Tanda(i,1) = input("Masukkan Tanda : ");
+    if Tanda(i,1) == '<' %inisiasi panjang zeros
+        panjang = panjang + 1;
+    elseif Tanda(i,1) == '>'
+        panjang = panjang + 2;
+    else
+        panjang = panjang + 1;
+    end
+end
+s = 0;
+R = 0;
+for i = 1 : nKendala
+if Tanda(i) == '<'
+    s = s+1;
+elseif Tanda(i) == '='
+    R = R+1;
+elseif Tanda(i) == '>'
+    s = s+1;
+    R = R+1;
+end
+end
+header = "x" + string(1:nVariabel);
+if s ~=0
+header(length(header)+1 : length(header)+s) = string(1:s);
+end
+if R ~=0
+header(length(header)+1 : length(header)+R) = string(1:R);
+end
+header(end+1) = "NK";
+%Menbuat Matriks Kendala baru
+Kendala = [Kendala(:,1 : nVariabel) zeros(nKendala,panjang) Kendala(:,end)];
+geser = 1;
+Zb = zeros (1, nVariabel+ panjang + 1);
+for j = 1 : nKendala
+    if Tanda(j) == '<'
+    Kendala (j,nVariabel+geser) = 1;
+    geser = geser + 1;
+    elseif Tanda(j) == '>'
+    Kendala (j,nVariabel+geser) = -1; %Surplus Variabel
+    Kendala (j,nVariabel+(geser+1)) = 1; %Artificial Variabel
+    Zb(1 : nVariabel) =Zb(1 : nVariabel) + [Kendala(j,1 : nVariabel)];
+    Zb(nVariabel+geser) = -1;
+    Zb(end) = Zb(end) + Kendala(j,end);
+    geser = geser + 2;
+    elseif Tanda(j) == '='
+    disp ('=')
+    Kendala (j,nVariabel+geser) = 1;
+    Zb(1 : nVariabel) =Zb(1 : nVariabel) +[Kendala(j,1 : nVariabel)];
+    Zb(end) = Zb(end) + Kendala(j,end);
+    geser = geser + 1;
+    end
+    
+end
+%Kendala
+Z = [Z zeros(1,panjang + 1)];
+syms M
+if Choose == "max"
+    Zb = -M*Zb;
+    Zb = Zb - Z;
+elseif Choose =="min"
+    Zb = M*Zb - Z;
+end
+Z = Zb;
+P = [header;Kendala ; Z];
+pretty(P);
+V = zeros(nKendala,1);
+k =1;
+
+while (true)
+%VariabelKunci = find (Z == min(Z(1:nVariabel)))
+VariabelKunci = input("Masukkan Kolom Kunci : ");
+format short;
+Rasio = Kendala(1:nKendala,end)./Kendala(1:nKendala,VariabelKunci);
+Rasio = Rasio'
+format rat;
+%BarisKunci = find (Rasio ==min(Rasio) )
+BarisKunci = input("Masukkan Baris Kunci : ");
+V(BarisKunci) = VariabelKunci;
+
+Kendala(BarisKunci,:) = Kendala(BarisKunci,:)./Kendala(BarisKunci,VariabelKunci);
+for j = 1 : nKendala
+if j ~= BarisKunci
+Kendala(j,:) = Kendala(j,:) - Kendala(BarisKunci,:).*Kendala(j,VariabelKunci);
+end
+end
+disp ("ITERASI KE " + k);
+Z = Z - Kendala(BarisKunci,:).*Z(VariabelKunci);
+P = [header;Kendala;Z];
+pretty(P);
+x = input("Apakah Mau Melanjutkan Iterasi : ");
+
+if x == 0
+    break;
+end
+k = k+1;
+end
+try
+sprintf('Fungsi Bernilai Optimal dengan nilai : %d',Z(end));
+
+for k = 1 : nKendala
+if V(k) ~=0 && V(k) <= nVariabel
+disp ("Variabel ke - " + V(k) + " = " + Kendala(k,end));
+end
+
+end
+catch me 
+disp("Solusi infeasibel");
+end
