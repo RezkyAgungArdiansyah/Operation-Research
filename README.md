@@ -1,5 +1,5 @@
 # Operation-Research
-### simplex method and big - M method
+### [simplex method](https://github.com/RezkyAgungArdiansyah/Operation-Research/blob/main/LPSimpleksMethod) and [big - M](https://github.com/RezkyAgungArdiansyah/Operation-Research/blob/main/LPBigMMethod) method
 
 * simpleks method is popular method to solve linear programing, the step to use this code is :
 1. it will ask to how many the constraints do you have..
