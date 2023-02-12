@@ -1,3 +1,25 @@
+%{
+    input : 1. banyak persamaan kendala.        contoh  : 4
+            2. persamaan yang mau dioptimalkan. contoh  : [1 2] artinya x1 + 2*x2
+            3. ''max'' / ''min''                contoh  : "max"
+            4. Masukkan fungsi kendala ke - n   contoh  : [2 1 20]
+            5. Masukkan Tanda                   contoh  : '<'or '>' otherwise '=' 
+    proses
+            asumsikan M = infinity
+            1. masukkan kolom kunci : a. jika fungsi objektif dimaksimumkan
+                                         maka pilih Ter-negatif dibaris
+                                         terakhir jika tidak ada maka
+                                         iterasi berhenti dengan input 0
+                                      b. jika fungsi objektif diminimumkan
+                                         maka pilih Ter-positif dibaris
+                                         terakhir jika tidak ada maka
+                                         iterasi berhenti dengan input 0
+            2. Apakah Mau Melanjutkan Iterasi ? input 0 berhenti input
+                                                lainnya untuk lanjut
+    output  : titik titik x1,x2,x3,...,xn
+              f(x1,x2,x3,...,xn)
+%}
+
 clc;clear;close all;format rat;
 nKendala = input("Masukkan banyak persamaan kendala : ");
 Z = input("Masukkan persamaan yang mau dioptimalkan \n");nVariabel = length(Z);  % Masukkan dalam bentuk matriks
@@ -7,6 +29,15 @@ panjang = 0;
 for i = 1 : nKendala
     Kendala (i,:) = input("Masukkan fungsi kendala ke - " + i + " : ");
     Tanda(i,1) = input("Masukkan Tanda : ");
+    % Nilai Kanan Tidak boleh negatif sehingga persamaan diubah tandanya
+    if Kendala(i,end) < 0
+        Kendala(i,:) = -1*Kendala(i,:);
+        if Tanda(i,1) == '<' 
+            Tanda(i,1) = '>';
+        elseif Tanda(i,1) =='>'
+            Tanda(i,1) = '<';
+        end
+    end
     if Tanda(i,1) == '<' %inisiasi panjang zeros
         panjang = panjang + 1;
     elseif Tanda(i,1) == '>'
