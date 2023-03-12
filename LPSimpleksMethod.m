@@ -1,5 +1,5 @@
 %{
-    % Simpleks
+    % Simpleks Methode
     input : 1. how many constraint u have   ex  : 4
             2. objective function           ex  : [1 2] => x1 + 2*x2
             3. input constraint             ex  : [2 1 20]
