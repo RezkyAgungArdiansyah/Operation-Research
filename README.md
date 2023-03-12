@@ -32,7 +32,7 @@ The Big-M method is an alternative technique to the Simplex method for solving l
 #### for the M - method it's same like simpleks method but the M variabel we assume that is infinity
 
 ## Integer Programming
-### Cutting Plane Method 
+### [Cutting Plane Method](https://github.com/RezkyAgungArdiansyah/Operation-Research/blob/main/IPCuttingPlane.m)
 The cutting plane method is a mathematical optimization technique used to solve linear programming problems. It is also known as the method of feasible directions or the method of separating hyperplanes.
 
 The method involves iteratively solving a sequence of linear programming subproblems, where each subproblem involves adding a new linear constraint to the original problem. These constraints are known as cutting planes or separating hyperplanes, and they are used to eliminate solutions that are not feasible.
