@@ -26,7 +26,11 @@ The Big-M method is an algorithm used to solve linear programming problems, part
 
 The objective is to minimize the value of the artificial variable, M, subject to the original constraints and the additional constraints that enforce the slack variables to be non-negative. The method works by iteratively solving a sequence of linear programming subproblems, where each subproblem involves adding the artificial variable and using it to find an initial feasible solution.
 
-The Big-M method is an alternative technique to the Simplex method for solving linear programming problems, particularly those with constraints that are not in standard form. The main advantage of the Big-M method over the Simplex method is that it can handle constraints with inequalities and mixed constraints more easily. Simplex method is more efficient for problems in standard form, the Big-M method is more flexible and versatile in handling a wider range of linear programming problems.
+At each iteration, the objective function is modified to include the artificial variable with a large coefficient, M, and the problem is solved using the Simplex method. If the optimal solution has a non-zero value for the artificial variable, the problem is infeasible, and M is increased until a feasible solution is found. Once a feasible solution is found, the artificial variable and its associated constraints are removed, and the problem is solved using the Simplex method again to obtain the optimal solution.
+
+Big-M method is particularly useful for solving linear programming problems with non-standard form constraints, such as inequality and mixed constraints. However, the method can be computationally expensive if the value of M is too large, and it may not converge if the initial value of M is not chosen appropriately. As such, other optimization techniques such as interior-point methods or decomposition methods may be more suitable for certain classes of problems.
+
+Big-M method is an alternative technique to the Simplex method for solving linear programming problems, particularly those with constraints that are not in standard form. The main advantage of the Big-M method over the Simplex method is that it can handle constraints with inequalities and mixed constraints more easily. Simplex method is more efficient for problems in standard form, the Big-M method is more flexible and versatile in handling a wider range of linear programming problems.
 
 
 #### for the M - method it's same like simpleks method but the M variabel we assume that is infinity
